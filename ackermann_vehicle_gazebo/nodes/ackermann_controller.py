@@ -437,7 +437,7 @@ class _AckermannCtrlr(object):
             self._right_rear_ang_vel = \
                 gain * right_dist * self._right_rear_inv_circ
 
-    _DEF_WHEEL_DIA = 1.0    # Default wheel diameter. Unit: meter.
+    _DEF_WHEEL_DIA = 0.19    # Default wheel diameter. Unit: meter.
     _DEF_EQ_POS = 0.0       # Default equilibrium position. Unit: meter.
     _DEF_CMD_TIMEOUT = 0.5  # Default command timeout. Unit: second.
     _DEF_PUB_FREQ = 30.0    # Default publishing frequency. Unit: hertz.
