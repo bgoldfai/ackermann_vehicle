@@ -10,5 +10,5 @@ install(DIRECTORY launch/
 
 install(DIRECTORY urdf/
    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/urdf
-   FILES_MATCHING PATTERN "*.launch" PATTERN "*.xacro" PATTERN "*.yaml" PATTERN "*.urdf"
+   FILES_MATCHING PATTERN "*.dae" PATTERN "*.xacro" PATTERN "*.yaml" PATTERN "*.urdf"
 )
