@@ -1,20 +1,20 @@
 <?xml version="1.0"?>
 
-<robot name="jump22deg">
+<robot name="jump30deg">
   <gazebo>
     <static>true</static>
   </gazebo>
-  <link name="jump22deg_link">
+  <link name="jump30deg_link">
     <origin pose="0 0 0 0 0 0"/>
     <collision name="jump22deg_collision">
       <geometry>
-        <mesh filename="package://ackermann_vehicle_description/urdf/jump22deg.stl" scale="0.01 0.01 0.01" />
+        <mesh filename="package://ackermann_vehicle_description/urdf/jump30deg.stl" scale="0.01 0.01 0.01" />
       </geometry>
     </collision>
     
     <visual name="jump22deg_visual" cast_shadows="false">
       <geometry>
-        <mesh filename="package://ackermann_vehicle_description/urdf/jump22deg.stl" scale="0.01 0.01 0.01" />
+        <mesh filename="package://ackermann_vehicle_description/urdf/jump30deg.stl" scale="0.01 0.01 0.01" />
       </geometry>
     </visual>
     <inertial>
