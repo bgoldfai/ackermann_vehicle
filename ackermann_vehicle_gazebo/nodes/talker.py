@@ -10,10 +10,10 @@ def talker():
     while not rospy.is_shutdown():
         msg = AckermannDriveStamped()
         msg.header.stamp = rospy.Time.now()
-        msg.drive.speed = 3.5
-        msg.drive.steering_angle = -0.02
+        msg.drive.speed = 5
+        msg.drive.steering_angle = 0.0
         
-#        msg.drive.acceleration = 0.2
+        msg.drive.acceleration = 2
 #        msg.drive.steering_angle_velocity = 0.2
 
         pub.publish(msg)
