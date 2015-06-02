@@ -38,12 +38,13 @@ limitations under the License.
 <robot name="hpi_baja" xmlns:xacro="http://www.ros.org/wiki/xacro">
   <!-- Degree-to-radian conversions -->
   <xacro:property name="degrees_45" value="0.785398163"/>
+  <xacro:property name="degrees_25" value="0.436332313"/>
   <xacro:property name="degrees_90" value="1.57079633"/>
 
   <!-- chassis_length is measured along the x axis, chassis_width
        along the y axis, and chassis_height along the z axis. -->
   <xacro:property name="chassis_length" value="0.90"/>
-  <xacro:property name="chassis_width" value="0.20"/>
+  <xacro:property name="chassis_width" value="0.25"/>
   <xacro:property name="chassis_height" value="0.25"/>
   <xacro:property name="chassis_mass" value="19.555"/>
 
@@ -70,8 +71,8 @@ limitations under the License.
   <xacro:property name="wheel_travel" value="0.1"/>
   <xacro:property name="shock_z_offset" value="0.11"/>
   
-  <xacro:property name="front_wheel_travel" value="0.1"/>
-  <xacro:property name="front_shock_z_offset" value="0.1"/>
+  <xacro:property name="front_wheel_travel" value="0.12"/>
+  <xacro:property name="front_shock_z_offset" value="0.09"/>
   <xacro:property name="rear_wheel_travel" value="0.1"/>
   <xacro:property name="rear_shock_z_offset" value="0.12"/>
 
@@ -101,14 +102,14 @@ limitations under the License.
        2*26.82/0.19 = 282.315789474
          
           -->
-  <xacro:property name="axle_eff_limit" value="5"/>
+  <xacro:property name="axle_eff_limit" value="7"/>
   <xacro:property name="axle_vel_limit" value="282.315789474"/>
 
   <!-- These constants are used to simulate a Traxxas 2056 servo operated at
        6 V. servo_stall_torque is measured in N m. servo_no_load_speed is
        measured in rad/s. -->
   <xacro:property name="servo_stall_torque" value="3.432620346181713"/>
-  <xacro:property name="servo_no_load_speed" value="6.553"/>
+  <xacro:property name="servo_no_load_speed" value="6.98131700798"/>
 
   <material name="chassis_mat">
     <color rgba="0.5 0.5 0.5 1"/>
@@ -152,11 +153,12 @@ limitations under the License.
       <child link="${child}"/>
 
       <origin xyz="${fr_reflect * wheelbase / 2}
-                   ${lr_reflect * ((hex_hub_dist / 2) - axle_length)}
+                   ${lr_reflect * ((hex_hub_dist / 2))}
                    ${-chassis_height/2 + (wheel_travel / 2) - shock_z_offset}"/>
       <axis xyz="0 0 -1"/>
       <limit lower="${-wheel_travel / 2}" upper="${wheel_travel / 2}"
              effort="${shock_eff_limit}" velocity="${shock_vel_limit}"/>
+      <dynamics damping="0.1" friction="0.0"/>
     </joint>
     <transmission name="${lr_prefix}_${fr_prefix}_shock_trans">
       <type>transmission_interface/SimpleTransmission</type>
@@ -223,8 +225,8 @@ limitations under the License.
 
     <gazebo reference="${lr_prefix}_${fr_prefix}_wheel">
       <material>Gazebo/Black</material>
-      <mu1>0.4</mu1>
-      <mu2>0.6</mu2>
+      <mu1>0.45</mu1>
+      <mu2>0.5</mu2>
 <!--      <fdir1>1.0 0.0 0.0</fdir1> -->
     </gazebo>
   </xacro:macro>
@@ -244,7 +246,7 @@ limitations under the License.
       <parent link="${lr_prefix}_steering_link"/>
       <child link="${lr_prefix}_${fr_prefix}_axle_carrier"/>
       <axis xyz="0 0 1"/>
-      <limit lower="${-degrees_45}" upper="${degrees_45}"
+      <limit lower="${-degrees_25}" upper="${degrees_25}"
              effort="${servo_stall_torque}" velocity="${servo_no_load_speed}"/>
     </joint>
     <transmission name="${lr_prefix}_steering_trans">
@@ -293,7 +295,7 @@ limitations under the License.
   <!-- Chassis -->
   <link name="chassis">
     <visual>
-      <origin xyz="${-chassis_length/2 + 0.1} 0 ${-chassis_height}"/>
+      <origin xyz="${-chassis_length/2 + 0.08} 0 ${-chassis_height}"/>
       <geometry>
         <mesh filename="package://ackermann_vehicle_description/urdf/5scChassis.stl" scale="0.01 0.01 0.01" />
         <!-- <box size="${chassis_length} ${chassis_width} ${chassis_height}"/> -->
@@ -302,19 +304,20 @@ limitations under the License.
     </visual>
 
     <collision>
-      <origin xyz="0 0 ${-chassis_height / 2}"/>
+      <origin xyz="${-chassis_length/2 + 0.08} 0 ${-chassis_height}"/>
       <geometry>
-        <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
+        <mesh filename="package://ackermann_vehicle_description/urdf/5scChassis.stl" scale="0.01 0.01 0.01" />
+        <!-- <box size="${chassis_length} ${chassis_width} ${chassis_height}"/> -->
       </geometry>
     </collision>
 
     <inertial>
       <mass value="${chassis_mass}"/>
-      <inertia ixx="0.00003881755275"
+      <inertia ixx="0.003881755275"
                ixy="0" ixz="0"
-               iyy="0.00011310597718"
+               iyy="0.011310597718"
                iyz="0"
-               izz="0.0001243832479"/>
+               izz="0.01243832479"/>
     </inertial>
   </link>
   <gazebo reference="chassis">

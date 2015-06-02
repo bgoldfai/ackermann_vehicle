@@ -11,7 +11,7 @@ def talker():
         msg = AckermannDriveStamped()
         msg.header.stamp = rospy.Time.now()
         msg.drive.speed = 5
-        msg.drive.steering_angle = 0.0
+        msg.drive.steering_angle = 0.00
         
         msg.drive.acceleration = 2
 #        msg.drive.steering_angle_velocity = 0.2

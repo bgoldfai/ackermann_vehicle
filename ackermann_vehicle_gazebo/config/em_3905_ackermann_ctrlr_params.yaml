@@ -51,10 +51,10 @@ right_rear_wheel:
 
 shock_absorbers:
   - controller_name: left_front_shock_ctrlr
-    equilibrium_position: 0.06
+    equilibrium_position: 0.08
   - controller_name: right_front_shock_ctrlr
-    equilibrium_position: 0.06
+    equilibrium_position: 0.08
   - controller_name: left_rear_shock_ctrlr
-    equilibrium_position: 0.06
+    equilibrium_position: 0.09
   - controller_name: right_rear_shock_ctrlr
-    equilibrium_position: 0.06
+    equilibrium_position: 0.09

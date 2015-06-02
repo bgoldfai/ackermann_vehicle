@@ -66,21 +66,21 @@ right_rear_axle_ctrlr:
 # shock_damping, an approximation of the viscous damping coefficient of an
 # Ultra Shock shock absorber, is 36.2416 Ns/m
 # (i.e. sqrt(3 * shock_spring_constant)).
-# sqrt(3 * 2626.902525))
+# sqrt(3 * 2626.902525)) = 88.7733494637
 
 left_front_shock_ctrlr:
   joint: left_front_shock
   type: effort_controllers/JointPositionController
-  pid: {p: 4378.170875, i: 0.0, d: 88.7733494637}
+  pid: {p: 4378.170875, i: 0.0, d: 150}
 right_front_shock_ctrlr:
   joint: right_front_shock
   type: effort_controllers/JointPositionController
-  pid: {p: 4378.170875, i: 0.0, d: 88.7733494637}
+  pid: {p: 4378.170875, i: 0.0, d: 150}
 left_rear_shock_ctrlr:
   joint: left_rear_shock
   type: effort_controllers/JointPositionController
-  pid: {p: 4378.170875, i: 0.0, d: 88.7733494637}
+  pid: {p: 4378.170875, i: 0.0, d: 150}
 right_rear_shock_ctrlr:
   joint: right_rear_shock
   type: effort_controllers/JointPositionController
-  pid: {p: 4378.170875, i: 0.0, d: 88.7733494637}
+  pid: {p: 4378.170875, i: 0.0, d: 150}
