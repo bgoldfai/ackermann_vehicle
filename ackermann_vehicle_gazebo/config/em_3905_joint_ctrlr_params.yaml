@@ -71,16 +71,16 @@ right_rear_axle_ctrlr:
 left_front_shock_ctrlr:
   joint: left_front_shock
   type: effort_controllers/JointPositionController
-  pid: {p: 4378.170875, i: 0.0, d: 150}
+  pid: {p: 4378.170875, i: 0.0, d: 88}
 right_front_shock_ctrlr:
   joint: right_front_shock
   type: effort_controllers/JointPositionController
-  pid: {p: 4378.170875, i: 0.0, d: 150}
+  pid: {p: 4378.170875, i: 0.0, d: 88}
 left_rear_shock_ctrlr:
   joint: left_rear_shock
   type: effort_controllers/JointPositionController
-  pid: {p: 4378.170875, i: 0.0, d: 150}
+  pid: {p: 4378.170875, i: 0.0, d: 88}
 right_rear_shock_ctrlr:
   joint: right_rear_shock
   type: effort_controllers/JointPositionController
-  pid: {p: 4378.170875, i: 0.0, d: 150}
+  pid: {p: 4378.170875, i: 0.0, d: 88}

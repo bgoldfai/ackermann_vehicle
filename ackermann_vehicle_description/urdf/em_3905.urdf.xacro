@@ -158,7 +158,7 @@ limitations under the License.
       <axis xyz="0 0 -1"/>
       <limit lower="${-wheel_travel / 2}" upper="${wheel_travel / 2}"
              effort="${shock_eff_limit}" velocity="${shock_vel_limit}"/>
-      <dynamics damping="0.1" friction="0.0"/>
+      <dynamics damping="50" friction="0.0"/>
     </joint>
     <transmission name="${lr_prefix}_${fr_prefix}_shock_trans">
       <type>transmission_interface/SimpleTransmission</type>
@@ -227,6 +227,8 @@ limitations under the License.
       <material>Gazebo/Black</material>
       <mu1>0.4</mu1>
       <mu2>0.5</mu2>
+      <kp  value="10000000.0" />
+      <kd  value="1.0" />
 <!--      <fdir1>1.0 0.0 0.0</fdir1> -->
     </gazebo>
   </xacro:macro>
@@ -360,10 +362,12 @@ limitations under the License.
       <topicName>raw_imu</topicName>
       <rpyOffset>0 0 0</rpyOffset>
       <xyzOffset>0 0 0</xyzOffset>
-      <accelDrift>0.1 0.1 0.1</accelDrift>
-      <accelGaussianNoise>0.05 0.05 0.03</accelGaussianNoise>
+      <accelDrift>0.001 0.001 0.001</accelDrift>
+      <accelGaussianNoise>0.001 0.001 0.001</accelGaussianNoise>
       <rateDrift>0.01 0.01 0.01</rateDrift>
       <rateGaussianNoise>0.05 0.05 0.015</rateGaussianNoise>
+      <headingDrift>0.001 0.001 0.001</headingDrift>
+      <headingGaussianNoise>0.001 0.001 0.0005</headingGaussianNoise>
     </plugin>
     
     <plugin name="gps" filename="libhector_gazebo_ros_gps.so">
@@ -372,9 +376,9 @@ limitations under the License.
       <frameId>base_link</frameId>
       <topicName>fix</topicName>
       <velocityTopicName>fix_velocity</velocityTopicName>
-      <referenceLatitude>49.860246</referenceLatitude>
-      <referenceLongitude>8.687077</referenceLongitude>
-      <drift>5.0 5.0 5.0</drift>
+      <referenceLatitude>33.774497</referenceLatitude>
+      <referenceLongitude>-84.405001</referenceLongitude>
+      <drift>0.3 0.3 0.3</drift>
       <gaussianNoise>0.01 0.01 0.01</gaussianNoise>
       <velocityDrift>0 0 0</velocityDrift>
       <velocityGaussianNoise>0.05 0.05 0.05</velocityGaussianNoise>

@@ -16,8 +16,8 @@ def callback(data):
   
 def talker():
 
-  throttleMultiplier = 0.4
-  steeringMultiplier = 18
+  throttleMultiplier = 0.5
+  steeringMultiplier = 20
   throttleAxis = 5
   brakeAxis = 2
   steeringAxis = 3
