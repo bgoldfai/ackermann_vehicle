@@ -7,6 +7,7 @@ install(PROGRAMS
   nodes/ackermann_controller.py
   nodes/talker.py
   nodes/joystickAckermann.py
+  nodes/wheelSpeedsGazebo.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 install(DIRECTORY launch/
