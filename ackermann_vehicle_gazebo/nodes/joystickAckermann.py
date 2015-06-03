@@ -16,8 +16,8 @@ def callback(data):
   
 def talker():
 
-  throttleMultiplier = 0.35
-  steeringMultiplier = 25
+  throttleMultiplier = 0.4
+  steeringMultiplier = 18
   throttleAxis = 5
   brakeAxis = 2
   steeringAxis = 3
@@ -32,7 +32,7 @@ def talker():
   rospy.Subscriber('joy', Joy, callback)
   rospy.init_node('talker', anonymous=True)
   
-  rate = rospy.Rate(5) # 10hz
+  rate = rospy.Rate(10) # 10hz
   
   while not rospy.is_shutdown():
     if receivedJoy:
