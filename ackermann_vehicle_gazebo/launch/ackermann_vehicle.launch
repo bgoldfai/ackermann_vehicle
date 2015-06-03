@@ -89,5 +89,6 @@ limitations under the License.
       <rosparam file="$(find ackermann_vehicle_gazebo)/config/em_3905_ackermann_ctrlr_params.yaml" command="load"/>
     </node>
     
+    <node name="wheelSpeeds" pkg="ackermann_vehicle_gazebo" type="wheelSpeedsGazebo.py" output="screen" />
   </group>
 </launch>
