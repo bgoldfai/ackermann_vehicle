@@ -294,11 +294,11 @@ class _AckermannCtrlr(object):
             # Publish the steering and axle joint commands.
             self._left_steer_cmd_pub.publish(self._theta_left)
             self._right_steer_cmd_pub.publish(self._theta_right)
-            if self._left_front_axle_cmd_pub:
-                self._left_front_axle_cmd_pub.publish(self._left_front_ang_vel)
-            if self._right_front_axle_cmd_pub:
-                self._right_front_axle_cmd_pub.\
-                    publish(self._right_front_ang_vel)
+            #if self._left_front_axle_cmd_pub:
+            #    self._left_front_axle_cmd_pub.publish(self._left_front_ang_vel)
+            #if self._right_front_axle_cmd_pub:
+            #    self._right_front_axle_cmd_pub.\
+            #        publish(self._right_front_ang_vel)
             if self._left_rear_axle_cmd_pub:
                 self._left_rear_axle_cmd_pub.publish(self._left_rear_ang_vel)
             if self._right_rear_axle_cmd_pub:
@@ -440,7 +440,7 @@ class _AckermannCtrlr(object):
     _DEF_WHEEL_DIA = 0.19    # Default wheel diameter. Unit: meter.
     _DEF_EQ_POS = 0.0       # Default equilibrium position. Unit: meter.
     _DEF_CMD_TIMEOUT = 0.5  # Default command timeout. Unit: second.
-    _DEF_PUB_FREQ = 30.0    # Default publishing frequency. Unit: hertz.
+    _DEF_PUB_FREQ = 50.0    # Default publishing frequency. Unit: hertz.
 # end _AckermannCtrlr
 
 

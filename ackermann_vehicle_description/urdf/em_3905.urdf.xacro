@@ -225,8 +225,8 @@ limitations under the License.
 
     <gazebo reference="${lr_prefix}_${fr_prefix}_wheel">
       <material>Gazebo/Black</material>
-      <mu1>0.4</mu1>
-      <mu2>0.5</mu2>
+      <mu1>0.45</mu1>
+      <mu2>0.55</mu2>
       <kp  value="10000000.0" />
       <kd  value="1.0" />
 <!--      <fdir1>1.0 0.0 0.0</fdir1> -->
@@ -359,7 +359,7 @@ limitations under the License.
       <updateRate>200.0</updateRate>
       <bodyName>base_link</bodyName>
       <frameId>base_link</frameId>
-      <topicName>raw_imu</topicName>
+      <topicName>imu</topicName>
       <rpyOffset>0 0 0</rpyOffset>
       <xyzOffset>0 0 0</xyzOffset>
       <accelDrift>0.001 0.001 0.001</accelDrift>
@@ -374,7 +374,7 @@ limitations under the License.
       <updateRate>20.0</updateRate>
       <bodyName>base_link</bodyName>
       <frameId>base_link</frameId>
-      <topicName>fix</topicName>
+      <topicName>gpsRoverStatus</topicName>
       <velocityTopicName>fix_velocity</velocityTopicName>
       <referenceLatitude>33.774497</referenceLatitude>
       <referenceLongitude>-84.405001</referenceLongitude>
