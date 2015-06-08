@@ -60,18 +60,6 @@ limitations under the License.
     <include file="$(find ackermann_vehicle_gazebo)/launch/empty_world.launch">
       <arg name="world_name" value="$(arg world_name)"/>
     </include>
-    
-    <!-- Load the jumps. -->
-    <node name="spawn_jump1" pkg="gazebo_ros" type="spawn_model"
-          args="-file $(find ackermann_vehicle_description)/urdf/jump22deg.urdf -urdf -model jump22deg
-                -gazebo_namespace /$(arg namespace)/gazebo
-                -x 5 -y -0.5 -z 0
-                -R 0 -P 0 -Y 0"/>
-    <node name="spawn_jump2" pkg="gazebo_ros" type="spawn_model"
-          args="-file $(find ackermann_vehicle_description)/urdf/jump30deg.urdf -urdf -model jump30deg
-                -gazebo_namespace /$(arg namespace)/gazebo
-                -x 5 -y -2.5 -z 0
-                -R 0 -P 0 -Y 0"/>
                 
     <!-- Spawn the vehicle. -->
     <node name="spawn_vehicle" pkg="gazebo_ros" type="spawn_model"

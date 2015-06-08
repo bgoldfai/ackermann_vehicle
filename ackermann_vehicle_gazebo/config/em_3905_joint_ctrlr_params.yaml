@@ -56,7 +56,8 @@ right_rear_axle_ctrlr:
   pid: {p: 1.5, i: 1.0, d: 0.0, i_clamp: 10.0}
 
 # The proportional gain of each shock absorber controller is
-# 2 * (0.07 * 2626.902525 / 0.084)
+# shock constant is 15 lb/in = 2626.902525 N/m
+# 2 * (0.07 * 2626.902525 / 0.1)
 # 2 * (shock_stroke * shock_spring_constant / wheel_travel). shock_stroke is
 # 0.028575 m. shock_spring_constant, an approximation of a Traxxas Ultra Shock
 # shock absorber spring's constant, is 437.817 N/m. wheel_travel, defined in
@@ -71,16 +72,16 @@ right_rear_axle_ctrlr:
 left_front_shock_ctrlr:
   joint: left_front_shock
   type: effort_controllers/JointPositionController
-  pid: {p: 4378.170875, i: 0.0, d: 88}
+  pid: {p: 3677.663535, i: 0.0, d: 88}
 right_front_shock_ctrlr:
   joint: right_front_shock
   type: effort_controllers/JointPositionController
-  pid: {p: 4378.170875, i: 0.0, d: 88}
+  pid: {p: 3677.663535, i: 0.0, d: 88}
 left_rear_shock_ctrlr:
   joint: left_rear_shock
   type: effort_controllers/JointPositionController
-  pid: {p: 4378.170875, i: 0.0, d: 88}
+  pid: {p: 3677.663535, i: 0.0, d: 88}
 right_rear_shock_ctrlr:
   joint: right_rear_shock
   type: effort_controllers/JointPositionController
-  pid: {p: 4378.170875, i: 0.0, d: 88}
+  pid: {p: 3677.663535, i: 0.0, d: 88}
