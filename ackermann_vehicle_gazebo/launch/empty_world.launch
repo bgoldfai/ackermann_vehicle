@@ -9,8 +9,9 @@
   <arg name="debug" default="false"/>
   <arg name="physics" default="ode"/>
   <arg name="verbose" default="false"/>
-  <arg name="world_name" default="worlds/empty.world"/> <!-- Note: the world_name is with respect to GAZEBO_RESOURCE_PATH environmental variable -->
-
+  <arg name="world_name" default="worlds/empty_sky.world"/> <!-- Note: the world_name is with respect to GAZEBO_RESOURCE_PATH environmental variable -->
+  <arg name="namespace" default="ackermann_vehicle"/>
+  
   <!-- set use_sim_time flag -->
   <group if="$(arg use_sim_time)">
     <param name="/use_sim_time" value="true" />
@@ -35,14 +36,22 @@
     <node name="gazebo_gui" pkg="gazebo_ros" type="gzclient" respawn="false" output="screen"/>
   </group>
 
+  <node name="spawn_track" pkg="gazebo_ros" type="spawn_model"
+        args="-file $(find ackermann_vehicle_description)/urdf/track.urdf -urdf -model track
+              -gazebo_namespace /$(arg namespace)/gazebo
+              -x 0 -y 0 -z 0.0762
+              -R 0 -P 0 -Y 0"/>
+
   <!-- Load the jumps. -->
   <node name="spawn_jump1" pkg="gazebo_ros" type="spawn_model"
         args="-file $(find ackermann_vehicle_description)/urdf/jump22deg.urdf -urdf -model jump22deg
-              -x 5 -y -0.5 -z 0
-              -R 0 -P 0 -Y 0"/>
+              -gazebo_namespace /$(arg namespace)/gazebo
+              -x 1 -y 7.5 -z 0
+              -R 0 -P 0 -Y -3.1415"/>
   <node name="spawn_jump2" pkg="gazebo_ros" type="spawn_model"
         args="-file $(find ackermann_vehicle_description)/urdf/jump30deg.urdf -urdf -model jump30deg
-              -x 5 -y -2.5 -z 0
+              -gazebo_namespace /$(arg namespace)/gazebo
+              -x -1 -y -7.5 -z 0
               -R 0 -P 0 -Y 0"/>
 
 </launch>
