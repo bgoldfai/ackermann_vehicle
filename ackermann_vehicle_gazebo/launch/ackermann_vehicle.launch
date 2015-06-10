@@ -52,8 +52,12 @@ limitations under the License.
     <arg name="namespace" value="$(arg namespace)"/>
   </include>
   
+  <!-- Remap to same topics as the actual robot -->
   <remap from="/ackermann_vehicle/imu" to="/imu" />
   <remap from="/ackermann_vehicle/gpsRoverStatus" to="/gpsRoverStatus" />
+  
+  <remap from="/ackermann_vehicle/camera/left" to="/left_camera" />
+  <remap from="/ackermann_vehicle/camera/right" to="/right_camera" />
   
   <group ns="$(arg namespace)">
     <!-- Create the world. -->
