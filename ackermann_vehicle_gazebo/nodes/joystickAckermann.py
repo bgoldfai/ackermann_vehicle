@@ -27,10 +27,10 @@ def talker():
   msg.drive.acceleration = 0.0
   msg.drive.steering_angle = 0.00
   msg.drive.steering_angle_velocity = 0.0
-
-  pub = rospy.Publisher('/ackermann_vehicle/ackermann_cmd', AckermannDriveStamped, queue_size=1)
+  
+  ackPub = rospy.Publisher('/ackermann_vehicle/ackermann_cmd', AckermannDriveStamped, queue_size=1)
   rospy.Subscriber('joy', Joy, callback)
-  rospy.init_node('talker', anonymous=True)
+  rospy.init_node('joystickAckermann')
   
   rate = rospy.Rate(10) # 10hz
   
@@ -51,7 +51,15 @@ def talker():
       
       msg.drive.steering_angle = math.radians(steeringMultiplier)*joy.axes[steeringAxis]
       
-      pub.publish(msg)
+      
+      if joy.buttons[0] == 1:
+        msg.drive.speed -= 0.5
+      elif joy.buttons[3] == 1:
+        msg.drive.speed += 0.5;
+      elif joy.buttons[1] == 1 or joy.buttons[2] == 1:
+        msg.drive.speed = 0.0;
+      
+      ackPub.publish(msg)
     rate.sleep()
 
 if __name__ == '__main__':
