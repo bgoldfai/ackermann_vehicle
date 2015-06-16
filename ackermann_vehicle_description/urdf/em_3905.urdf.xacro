@@ -102,7 +102,8 @@ limitations under the License.
        2*26.82/0.19 = 282.315789474
          
           -->
-  <xacro:property name="axle_eff_limit" value="7"/>
+  <xacro:property name="front_axle_eff_limit" value="2"/>
+  <xacro:property name="rear_axle_eff_limit" value="7"/>
   <xacro:property name="axle_vel_limit" value="282.315789474"/>
 
   <!-- These constants are used to simulate a Traxxas 2056 servo operated at
@@ -175,7 +176,7 @@ limitations under the License.
   </xacro:macro>
 
   <!-- The "wheel" macro defines an axle carrier, axle, and wheel. -->
-  <xacro:macro name="wheel" params="lr_prefix fr_prefix lr_reflect tire_width wheel_mass">
+  <xacro:macro name="wheel" params="lr_prefix fr_prefix lr_reflect tire_width wheel_mass axle_eff_limit">
     <link name="${lr_prefix}_${fr_prefix}_axle_carrier">
       <xacro:null_inertial/>
     </link>
@@ -188,7 +189,13 @@ limitations under the License.
       <origin rpy="${degrees_90} 0 0"/>
       <axis xyz="0 0 -1"/>
       <limit effort="${axle_eff_limit}" velocity="${axle_vel_limit}"/>
+      <dynamics damping="0.015" friction="0.0"/>
     </joint>
+    
+<!--    <gazebo reference="${lr_prefix}_${fr_prefix}_axle">
+      <dampingFactor>0.8</dampingFactor>
+    </gazebo>
+-->    
     <transmission name="${lr_prefix}_${fr_prefix}_axle_trans">
       <type>transmission_interface/SimpleTransmission</type>
       <joint name="${lr_prefix}_${fr_prefix}_axle">
@@ -225,17 +232,17 @@ limitations under the License.
 
     <gazebo reference="${lr_prefix}_${fr_prefix}_wheel">
       <material>Gazebo/Black</material>
-      <mu1>0.45</mu1>
-      <mu2>0.5</mu2>
+      <mu1>0.5</mu1>
+      <mu2>0.45</mu2>
       <kp  value="10000000.0" />
       <kd  value="1.0" />
-<!--      <fdir1>1.0 0.0 0.0</fdir1> -->
     </gazebo>
   </xacro:macro>
 
   <!-- Front wheel -->
   <xacro:macro name="front_wheel"
-               params="lr_prefix fr_prefix lr_reflect fr_reflect tire_width wheel_mass">
+               params="lr_prefix fr_prefix lr_reflect fr_reflect tire_width
+                       wheel_mass axle_eff_limit">
     <xacro:shock lr_prefix="${lr_prefix}" fr_prefix="${fr_prefix}"
                  lr_reflect="${lr_reflect}" fr_reflect="${fr_reflect}"
                  child="${lr_prefix}_steering_link"/>
@@ -268,18 +275,21 @@ limitations under the License.
 
     <xacro:wheel lr_prefix="${lr_prefix}" fr_prefix="${fr_prefix}"
                  lr_reflect="${lr_reflect}" tire_width="${tire_width}"
-                 wheel_mass="${wheel_mass}"/>
+                 wheel_mass="${wheel_mass}"
+                 axle_eff_limit="${axle_eff_limit}"/>
   </xacro:macro>
 
   <!-- Rear wheel -->
   <xacro:macro name="rear_wheel"
-               params="lr_prefix fr_prefix lr_reflect fr_reflect tire_width wheel_mass">
+               params="lr_prefix fr_prefix lr_reflect fr_reflect tire_width
+                       wheel_mass axle_eff_limit">
     <xacro:shock lr_prefix="${lr_prefix}" fr_prefix="${fr_prefix}"
                  lr_reflect="${lr_reflect}" fr_reflect="${fr_reflect}"
                  child="${lr_prefix}_${fr_prefix}_axle_carrier"/>
     <xacro:wheel lr_prefix="${lr_prefix}" fr_prefix="${fr_prefix}"
                  lr_reflect="${lr_reflect}" tire_width="${tire_width}"
-                 wheel_mass="${wheel_mass}"/>
+                 wheel_mass="${wheel_mass}"
+                 axle_eff_limit="${axle_eff_limit}"/>
   </xacro:macro>
 
   <!-- base_link must have geometry so that its axes can be displayed in
@@ -328,7 +338,7 @@ limitations under the License.
   <gazebo reference="chassis">
     <material>Gazebo/Grey</material>
     <mu1>0.3</mu1>
-    <mu2>0.3</mu2>
+    <mu2>0.4</mu2>
   </gazebo>
 
   <joint name="base_link_to_chasis" type="fixed">
@@ -431,19 +441,23 @@ limitations under the License.
   <xacro:front_wheel lr_prefix="left" fr_prefix="front"
                      lr_reflect="1" fr_reflect="1"
                      tire_width="${front_tire_width}"
-                     wheel_mass="${front_wheel_mass}"/>
+                     wheel_mass="${front_wheel_mass}"
+                     axle_eff_limit="${front_axle_eff_limit}"/>
   <xacro:front_wheel lr_prefix="right" fr_prefix="front"
                      lr_reflect="-1" fr_reflect="1"
                      tire_width="${front_tire_width}"
-                     wheel_mass="${front_wheel_mass}"/>
+                     wheel_mass="${front_wheel_mass}"
+                     axle_eff_limit="${front_axle_eff_limit}"/>
   <xacro:rear_wheel lr_prefix="left" fr_prefix="rear"
                     lr_reflect="1" fr_reflect="-1"
                     tire_width="${rear_tire_width}"
-                    wheel_mass="${rear_wheel_mass}"/>
+                    wheel_mass="${rear_wheel_mass}"
+                    axle_eff_limit="${rear_axle_eff_limit}"/>
   <xacro:rear_wheel lr_prefix="right" fr_prefix="rear"
                     lr_reflect="-1" fr_reflect="-1"
                     tire_width="${rear_tire_width}"
-                    wheel_mass="${rear_wheel_mass}"/>
+                    wheel_mass="${rear_wheel_mass}"
+                    axle_eff_limit="${rear_axle_eff_limit}"/>
 
   <gazebo>
     <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so"/>
