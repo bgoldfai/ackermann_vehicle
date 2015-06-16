@@ -5,10 +5,9 @@
 Control the wheels of a vehicle with Ackermann steering.
 
 Subscribed Topics:
-    ackermann_cmd (ackermann_msgs/AckermannDriveStamped)
-        Ackermann command. It contains the vehicle's desired speed and steering
-        angle.
-
+    servoCommand (auto_rally_msgs/servoMSG)
+        Servo command for the position fo each of the servos [-1, 1]
+        
 Published Topics:
     <left steering controller name>/command (std_msgs/Float64)
         Command for the left steering controller.
@@ -114,13 +113,14 @@ limitations under the License.
 import math
 import numpy
 import threading
+import operator
 
 from math import pi
 
 import rospy
 import tf
 
-from ackermann_msgs.msg import AckermannDriveStamped
+from auto_rally_msgs.msg import servoMSG
 from std_msgs.msg import Float64
 from controller_manager_msgs.srv import ListControllers
 
@@ -208,15 +208,19 @@ class _AckermannCtrlr(object):
         # _last_cmd_time is the time at which the most recent Ackermann
         # driving command was received.
         self._last_cmd_time = rospy.get_time()
-
+      
         # _ackermann_cmd_lock is used to control access to _steer_ang,
         # _steer_ang_vel, _speed, and _accel.
-        self._ackermann_cmd_lock = threading.Lock()
-        self._steer_ang = 0.0      # Steering angle
-        self._steer_ang_vel = 0.0  # Steering angle velocity
-        self._speed = 0.0
-        self._accel = 0.0          # Acceleration
-
+#        self._ackermann_cmd_lock = threading.Lock()
+#        self._steer_ang = 0.0      # Steering angle
+#        self._steer_ang_vel = 0.0  # Steering angle velocity
+#        self._speed = 0.0
+#        self._accel = 0.0          # Acceleration
+        
+        self.lastCmdTime = rospy.get_time()
+        self.servoCmds = dict()
+        self.servoCmdLock = threading.Lock()
+        
         self._last_steer_ang = 0.0  # Last steering angle
         self._theta_left = 0.0      # Left steering joint angle
         self._theta_right = 0.0     # Right steering joint angle
@@ -243,8 +247,12 @@ class _AckermannCtrlr(object):
         self._inv_wheelbase = 1 / self._wheelbase  # Inverse of _wheelbase
         self._wheelbase_sqr = self._wheelbase ** 2
 
-        # Publishers and subscribers
+        #load servo commander priorities
+        self.commandPriorities = rospy.get_param("~servoCommandProirities", [])
+        self.commandPriorities = sorted(self.commandPriorities.items(), key=operator.itemgetter(1))
+        rospy.loginfo("AutoRallyGazeboController: Loaded %d servo commanders", len(self.commandPriorities))
 
+        # Publishers and subscribers
         self._left_steer_cmd_pub = \
             _create_cmd_pub(list_ctrlrs, left_steer_ctrlr_name)
         self._right_steer_cmd_pub = \
@@ -258,10 +266,10 @@ class _AckermannCtrlr(object):
             _create_axle_cmd_pub(list_ctrlrs, left_rear_axle_ctrlr_name)
         self._right_rear_axle_cmd_pub = \
             _create_axle_cmd_pub(list_ctrlrs, right_rear_axle_ctrlr_name)
-
-        self._ackermann_cmd_sub = \
-            rospy.Subscriber("ackermann_cmd", AckermannDriveStamped,
-                             self.ackermann_cmd_cb, queue_size=1)
+                             
+        self.servoCmdSub = \
+            rospy.Subscriber("servoCommand", servoMSG,
+                             self.servoCmdCb, queue_size=1)
 
     def spin(self):
         """Control the vehicle."""
@@ -273,6 +281,8 @@ class _AckermannCtrlr(object):
             delta_t = t - last_time
             last_time = t
 
+            frontBrake = 0.0;
+            speed = 0.0;
             if (self._cmd_timeout > 0.0 and
                 t - self._last_cmd_time > self._cmd_timeout):
                 # Too much time has elapsed since the last command. Stop the
@@ -281,44 +291,106 @@ class _AckermannCtrlr(object):
                     self._ctrl_steering(self._last_steer_ang, 0.0, 0.001)
                 self._ctrl_axles(0.0, 0.0, 0.0, steer_ang_changed, center_y)
             elif delta_t > 0.0:
-                with self._ackermann_cmd_lock:
-                    steer_ang = self._steer_ang
-                    steer_ang_vel = self._steer_ang_vel
-                    speed = self._speed
-                    accel = self._accel
+                #with self._ackermann_cmd_lock:
+                #    steer_ang = self._steer_ang
+                #    steer_ang_vel = self._steer_ang_vel
+                #    speed = self._speed
+                #    accel = self._accel
+                with self.servoCmdLock:
+                  foundSteering = False
+                  foundThrottle = False
+                  foundFrontBrake = False
+                  
+                  for cmd,priority in self.commandPriorities:
+                    #rospy.logwarn("looking for servo commander %s with priority %d", cmd, priority)
+                    if cmd in self.servoCmds:
+                      if abs(self.servoCmds[cmd].steering) <= 1.0 and \
+                         not foundSteering:
+                        #rospy.loginfo("%s in control of steering", cmd);
+                        steer_ang = -math.radians(20)*self.servoCmds[cmd].steering
+                        steer_ang_vel = 0.0
+                        foundSteering = True
+    
+                      if abs(self.servoCmds[cmd].throttle) <= 1.0 and \
+                         not foundThrottle:
+    
+                        #rospy.loginfo("%s in control of throttle", cmd);
+                        if self.servoCmds[cmd].throttle >= 0.0:
+                          speed = 6*self.servoCmds[cmd].throttle
+                        else:
+                          speed = self.servoCmds[cmd].throttle
+                        
+                        accel = 0.0
+                        foundThrottle = True
+    
+                      if self.servoCmds[cmd].frontBrake > 0.0 and \
+                         self.servoCmds[cmd].frontBrake < 1.0 and \
+                         not foundFrontBrake:
+                        
+                        #rospy.loginfo("%s in control of front brake", cmd);
+                        frontBrake = -2*self.servoCmds[cmd].frontBrake
+                        foundFrontBrake = True
+    
+                      else:
+                        frontBrake = 0
+                      
                 steer_ang_changed, center_y = \
                     self._ctrl_steering(steer_ang, steer_ang_vel, delta_t)
                 self._ctrl_axles(speed, accel, delta_t, steer_ang_changed,
                                  center_y)
 
             # Publish the steering and axle joint commands.
-            self._left_steer_cmd_pub.publish(self._theta_left)
+            '''self._left_steer_cmd_pub.publish(self._theta_left)
             self._right_steer_cmd_pub.publish(self._theta_right)
-            #if self._left_front_axle_cmd_pub:
-            #    self._left_front_axle_cmd_pub.publish(self._left_front_ang_vel)
-            #if self._right_front_axle_cmd_pub:
-            #    self._right_front_axle_cmd_pub.\
-            #        publish(self._right_front_ang_vel)
+            if self._left_front_axle_cmd_pub:
+                self._left_front_axle_cmd_pub.publish(self._left_front_ang_vel)
+            if self._right_front_axle_cmd_pub:
+                self._right_front_axle_cmd_pub.\
+                    publish(self._right_front_ang_vel)
             if self._left_rear_axle_cmd_pub:
                 self._left_rear_axle_cmd_pub.publish(self._left_rear_ang_vel)
             if self._right_rear_axle_cmd_pub:
                 self._right_rear_axle_cmd_pub.publish(self._right_rear_ang_vel)
-
+            '''
+            
+            self._left_steer_cmd_pub.publish(self._theta_left)
+            self._right_steer_cmd_pub.publish(self._theta_right)
+            if self._left_front_axle_cmd_pub:
+                self._left_front_axle_cmd_pub.publish(frontBrake)
+            if self._right_front_axle_cmd_pub:
+                self._right_front_axle_cmd_pub.publish(frontBrake)
+            if self._left_rear_axle_cmd_pub:
+                self._left_rear_axle_cmd_pub.publish(speed)
+            if self._right_rear_axle_cmd_pub:
+                self._right_rear_axle_cmd_pub.publish(speed)
+                
             self._sleep_timer.sleep()
 
-    def ackermann_cmd_cb(self, ackermann_cmd):
+    def servoCmdCb(self, servoCommand):
+      """Servo command callback
+
+        :Parameters:
+          servoCommand : auto_rally_msgs.msg.servoMSG
+            Position to set the control servos
+        """
+      with self.servoCmdLock:
+        self.lastCmdTime = rospy.get_time()
+        self.servoCmds[servoCommand.header.frame_id] = servoCommand
+        self._last_cmd_time = rospy.get_time()
+      
+#    def ackermann_cmd_cb(self, ackermann_cmd):
         """Ackermann driving command callback
 
         :Parameters:
           ackermann_cmd : ackermann_msgs.msg.AckermannDriveStamped
             Ackermann driving command.
         """
-        self._last_cmd_time = rospy.get_time()
-        with self._ackermann_cmd_lock:
-            self._steer_ang = ackermann_cmd.drive.steering_angle
-            self._steer_ang_vel = ackermann_cmd.drive.steering_angle_velocity
-            self._speed = ackermann_cmd.drive.speed
-            self._accel = ackermann_cmd.drive.acceleration
+#        self._last_cmd_time = rospy.get_time()
+#        with self._ackermann_cmd_lock:
+#            self._steer_ang = ackermann_cmd.drive.steering_angle
+#            self._steer_ang_vel = ackermann_cmd.drive.steering_angle_velocity
+#            self._speed = ackermann_cmd.drive.speed
+#            self._accel = ackermann_cmd.drive.acceleration
 
     def _get_front_wheel_params(self, side):
         # Get front wheel parameters. Return a tuple containing the steering
@@ -477,7 +549,6 @@ def _get_steer_ang(phi):
     if phi >= 0.0:
         return (pi / 2) - phi
     return (-pi / 2) - phi
-
 
 # main
 if __name__ == "__main__":

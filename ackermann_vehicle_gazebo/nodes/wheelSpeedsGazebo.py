@@ -6,6 +6,8 @@ from auto_rally_msgs.msg import wheelSpeeds
 from gazebo_msgs.msg import ModelStates
 from sensor_msgs.msg import JointState
 
+from auto_rally_msgs.msg import servoMSG
+
 
 class WheelSpeedsGazebo(object):
 

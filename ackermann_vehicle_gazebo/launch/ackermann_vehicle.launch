@@ -59,6 +59,8 @@ limitations under the License.
   <remap from="/ackermann_vehicle/camera/left" to="/left_camera" />
   <remap from="/ackermann_vehicle/camera/right" to="/right_camera" />
   
+  <remap from="/ackermann_vehicle/servoCommand" to="/servoCommand" />
+  
   <group ns="$(arg namespace)">
     <!-- Create the world. -->
     <include file="$(find ackermann_vehicle_gazebo)/launch/empty_world.launch">
@@ -80,9 +82,10 @@ limitations under the License.
 
     <!-- Control the steering, axle, and shock absorber joints. -->
     <node name="ackermann_controller" pkg="ackermann_vehicle_gazebo"
-          type="ackermann_controller.py">
+          type="ackermann_controller.py" output="screen">
       <param name="cmd_timeout" value="$(arg cmd_timeout)"/>
       <rosparam file="$(find ackermann_vehicle_gazebo)/config/em_3905_ackermann_ctrlr_params.yaml" command="load"/>
+      <rosparam param="servoCommandProirities" command="load" file="$(find infrastructure)/launch/servoCommandPriorities.yaml" />
     </node>
     
     <node name="wheelSpeeds" pkg="ackermann_vehicle_gazebo" type="wheelSpeedsGazebo.py" output="screen" />
