@@ -37,18 +37,18 @@ class WheelSpeedsGazebo(object):
       
 
   def getJointStateWheelParams(self, lr_prefix, fr_prefix):
-    dia = rospy.get_param('/ackermann_vehicle/ackermann_controller/' + lr_prefix + '_' + fr_prefix + '_wheel/diameter')
+    dia = rospy.get_param('/autoRally_platform/autoRally_controller/' + lr_prefix + '_' + fr_prefix + '_wheel/diameter')
     name = lr_prefix + '_' + fr_prefix + '_axle'
     return name, dia
     
   def getLinkStateFrontWheelParams(self, lr_prefix):
-    dia = rospy.get_param('/ackermann_vehicle/ackermann_controller/' + lr_prefix + '_front_wheel/diameter')
-    name = 'ackermann_vehicle::' + rospy.get_param('/ackermann_vehicle/ackermann_controller/' + lr_prefix + '_front_wheel/steering_link_name')
+    dia = rospy.get_param('/autoRally_platform/autoRally_controller/' + lr_prefix + '_front_wheel/diameter')
+    name = 'ackermann_vehicle::' + rospy.get_param('/autoRally_platform/autoRally_controller/' + lr_prefix + '_front_wheel/steering_link_name')
     return name, dia
 
   def getLinkStateRearWheelParams(self, lr_prefix):
-    dia = rospy.get_param('/ackermann_vehicle/ackermann_controller/' + lr_prefix + '_rear_wheel/diameter')
-    name = 'ackermann_vehicle::' + rospy.get_param('/ackermann_vehicle/ackermann_controller/' + lr_prefix + '_rear_wheel/link_name')
+    dia = rospy.get_param('/autoRally_platform/autoRally_controller/' + lr_prefix + '_rear_wheel/diameter')
+    name = 'autoRally_platform::' + rospy.get_param('/autoRally_platform/autoRally_controller/' + lr_prefix + '_rear_wheel/link_name')
     return name, dia
 
   def __init__(self):
@@ -63,7 +63,7 @@ class WheelSpeedsGazebo(object):
     #don't set up callback until params are initialized
     self.pub = rospy.Publisher('/wheelSpeeds', wheelSpeeds, queue_size=1)
     #self.sub = rospy.Subscriber('/ackermann_vehicle/gazebo/link_states', ModelStates, self.callback)
-    self.sub = rospy.Subscriber('/ackermann_vehicle/joint_states', JointState, self.callback)
+    self.sub = rospy.Subscriber('/autoRally_platform/joint_states', JointState, self.callback)
     
 if __name__ == "__main__":
   speed = WheelSpeedsGazebo()

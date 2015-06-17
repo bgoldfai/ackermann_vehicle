@@ -59,7 +59,7 @@ right_rear_axle_ctrlr:
 # shock constant is 15 lb/in = 2626.902525 N/m
 # 2 * (0.07 * 2626.902525 / 0.1)
 # 2 * (shock_stroke * shock_spring_constant / wheel_travel). shock_stroke is
-# 0.028575 m. shock_spring_constant, an approximation of a Traxxas Ultra Shock
+# 0.07 m. shock_spring_constant, an approximation of a Traxxas Ultra Shock
 # shock absorber spring's constant, is 437.817 N/m. wheel_travel, defined in
 # em_3905.urdf.xacro, is 0.084 m.
 #

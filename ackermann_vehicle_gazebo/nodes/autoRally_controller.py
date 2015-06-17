@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-"""ackermann_controller.py
+"""autoRally_controller.py
 
 Control the wheels of a vehicle with Ackermann steering.
 
@@ -125,17 +125,17 @@ from std_msgs.msg import Float64
 from controller_manager_msgs.srv import ListControllers
 
 
-class _AckermannCtrlr(object):
-    """Ackermann controller
+class AutoRallyCtrlr(object):
+    """AutoRally controller
 
-    An object of class _AckermannCtrlr is a node that controls the wheels of a
+    An object of class AutoRallyCtrlr is a node that controls the wheels of a
     vehicle with Ackermann steering.
     """
 
     def __init__(self):
-        """Initialize this _AckermannCtrlr."""
+        """Initialize this _AutoRallyCtrlr."""
 
-        rospy.init_node("ackermann_controller")
+        rospy.init_node("autoRally_controller")
 
         # Parameters
 
@@ -379,11 +379,11 @@ class _AckermannCtrlr(object):
         self._last_cmd_time = rospy.get_time()
       
 #    def ackermann_cmd_cb(self, ackermann_cmd):
-        """Ackermann driving command callback
+        """Servo command callback
 
         :Parameters:
-          ackermann_cmd : ackermann_msgs.msg.AckermannDriveStamped
-            Ackermann driving command.
+          servoCommand : auto_rally_msgs.msg.servoMSG
+            servo command.
         """
 #        self._last_cmd_time = rospy.get_time()
 #        with self._ackermann_cmd_lock:
@@ -552,5 +552,5 @@ def _get_steer_ang(phi):
 
 # main
 if __name__ == "__main__":
-    ctrlr = _AckermannCtrlr()
+    ctrlr = AutoRallyCtrlr()
     ctrlr.spin()

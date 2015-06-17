@@ -4,8 +4,7 @@ find_package(catkin REQUIRED)
 catkin_package()
 
 install(PROGRAMS
-  nodes/ackermann_controller.py
-  nodes/talker.py
+  nodes/autoRally_controller.py
   nodes/joystickAckermann.py
   nodes/wheelSpeedsGazebo.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})

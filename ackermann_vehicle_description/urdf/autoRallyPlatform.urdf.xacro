@@ -1,9 +1,10 @@
 <?xml version="1.0"?>
 
-<!-- em_3905.urdf.xacro
+<!-- autoRallyPlatform.urdf.xacro
 
-This file defines a model of a Traxxas(R) E-Maxx(R) #3905 RC (Radio Controlled)
-truck.
+This file defines a model of the AutoRally autonomous vehicle platform. It is 
+derived from the ackermann_vehicle_gazebo ROS package available at
+http://wiki.ros.org/ackermann_vehicle_gazebo
 
 Lengths are measured in meters, angles are measured in radians, and masses are
 measured in kilograms. All of these values are approximations.
@@ -12,14 +13,6 @@ To work with Gazebo, each link must have an inertial element, even if
 the link only serves to connect two joints. To be visible in Gazebo, a link
 must have a collision element. Furthermore, the link must have a Gazebo
 material.
-
-Traxxas(R), E-Maxx(R), and Titan(R) are registered trademarks of Traxxas
-Management, LLC. em_3905.urdf.xacro was independently created by Wunderkammer
-Laboratory, and neither em_3905.urdf.xacro nor Wunderkammer Laboratory is
-affiliated with, sponsored by, approved by, or endorsed by Traxxas Management,
-LLC. Mabuchi Motor(R) is a registered trademark of Mabuchi Motor Co., Ltd.
-Corporation Japan. All other trademarks and service marks are the property of
-their respective owners.
 
 Copyright (c) 2011-2014 Wunderkammer Laboratory
 
@@ -77,9 +70,9 @@ limitations under the License.
   <xacro:property name="rear_shock_z_offset" value="0.12"/>
 
   <!-- shock_eff_limit is 2 * ((shock_stroke / 2) * shock_spring_constant) N.
-       shock_stroke is 0.028575 meters. shock_spring_constant, an approximation
-       of a Traxxas Ultra Shock shock absorber spring's constant, is
-       437.817 N/m. -->
+       shock_stroke is 0.07 meters. shock_spring_constant, an approximation
+       of AutoRally platform shock absorber spring's constant, is
+       2626.902525 N/m. -->
   <xacro:property name="shock_eff_limit" value="157.6141515"/>
   <xacro:property name="shock_vel_limit" value="1000"/>
 
@@ -94,20 +87,16 @@ limitations under the License.
        axle_eff_limit = ((2 * stall_torque) * final_gear_ratio) / 4 =
          5.12766 N m
 
-       max_speed = 40 mph (30+ mph) = 17.8816 m/s
+       max_speed = 60mph = 26.82 m/s
        axle_vel_limit = (2 * pi) * (max_speed / (pi * tire_dia)) =
-         244.8696 rad/s
-         
-       60mph = 26.82 m/s
-       2*26.82/0.19 = 282.315789474
-         
-          -->
+          2*26.82/0.19 = 282.315789474 rad/s           
+       -->
   <xacro:property name="front_axle_eff_limit" value="2"/>
   <xacro:property name="rear_axle_eff_limit" value="7"/>
   <xacro:property name="axle_vel_limit" value="282.315789474"/>
 
-  <!-- These constants are used to simulate a Traxxas 2056 servo operated at
-       6 V. servo_stall_torque is measured in N m. servo_no_load_speed is
+  <!-- These constants are used to simulate a  Savox SV-0235MG servo operated at
+       7.4 V. servo_stall_torque is measured in N m. servo_no_load_speed is
        measured in rad/s. -->
   <xacro:property name="servo_stall_torque" value="3.432620346181713"/>
   <xacro:property name="servo_no_load_speed" value="6.98131700798"/>
@@ -131,7 +120,9 @@ limitations under the License.
   
   <!-- Inertia of a thick-walled cylindrical tube with open ends. Height is
        measured along the z axis, which is the tube's axis. inner_rad and
-       outer_rad are the tube's inner and outer radii, respectively. -->
+       outer_rad are the tube's inner and outer radii, respectively. Pitch
+       MOI is calculated from platform calibration data using bifilar pendulum
+       method -->
   <xacro:macro name="thick_walled_tube_inertial"
                params="inner_rad outer_rad height mass">
     <inertial>
@@ -312,7 +303,7 @@ limitations under the License.
     <visual>
       <origin xyz="${-chassis_length/2 + 0.08} 0 ${-chassis_height}"/>
       <geometry>
-        <mesh filename="package://ackermann_vehicle_description/urdf/5scChassis.stl" scale="0.01 0.01 0.01" />
+        <mesh filename="package://ackermann_vehicle_description/urdf/autoRallyPlatform.stl" scale="0.01 0.01 0.01" />
         <!-- <box size="${chassis_length} ${chassis_width} ${chassis_height}"/> -->
       </geometry>
       <material name="chassis_mat"/>
@@ -321,7 +312,7 @@ limitations under the License.
     <collision>
       <origin xyz="${-chassis_length/2 + 0.08} 0 ${-chassis_height}"/>
       <geometry>
-        <mesh filename="package://ackermann_vehicle_description/urdf/5scChassis.stl" scale="0.01 0.01 0.01" />
+        <mesh filename="package://ackermann_vehicle_description/urdf/autoRallyPlatform.stl" scale="0.01 0.01 0.01" />
         <!-- <box size="${chassis_length} ${chassis_width} ${chassis_height}"/> -->
       </geometry>
     </collision>
