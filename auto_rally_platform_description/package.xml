@@ -1,13 +1,16 @@
 <?xml version="1.0"?>
 <package>
-  <name>ackermann_vehicle_description</name>
+  <name>auto_rally_platform_description</name>
   <version>0.1.1</version>
   <description>
-    ackermann_vehicle_description contains the description (3D model,
-    kinematics, mass, etc.) of a vehicle with Ackermann steering.
+    auto_rally_platform_description contains the description (3D model,
+    kinematics, mass, etc.) of the AutoRally platform and other models
+    associated with the test track. This was developed from
+    ackermann_vehicle_description.  This package retains the original Apache
+    License, Version 2.0.
   </description>
   <!--
-    Copyright (c) 2011-2013 Wunderkammer Laboratory
+    Copyright (c) 2015 Georgia Institute of Technology
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -21,16 +24,12 @@
     See the License for the specific language governing permissions and
     limitations under the License.
   -->
-  <maintainer email="jim.rothrock@wunderkammerlab.com">
-    Jim Rothrock
+  <maintainer email="bgoldfain3@gatech.edu">
+    Brian Goldfain
   </maintainer>
   <license>Apache 2.0</license>
 
-  <url type="website">http://wiki.ros.org/ackermann_vehicle_description</url>
-  <url type="bugtracker">https://github.com/wunderkammer-laboratory/ackermann_vehicle/issues</url>
-  <url type="repository">https://github.com/wunderkammer-laboratory/ackermann_vehicle.git</url>
-
-  <author email="jim.rothrock@wunderkammerlab.com">Jim Rothrock</author>
+  <author email="bgoldfain3@gatech.edu">Brian Goldfain</author>
 
   <buildtool_depend>catkin</buildtool_depend>
 
@@ -39,7 +38,4 @@
   <run_depend>rviz</run_depend>
   <run_depend>xacro</run_depend>
 
-  <export>
-    <architecture_independent/>
-  </export>
 </package>

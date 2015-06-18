@@ -34,8 +34,8 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  <run_depend>ackermann_vehicle_description</run_depend>
-  <run_depend>ackermann_vehicle_gazebo</run_depend>
+  <run_depend>auto_rally_platform_description</run_depend>
+  <run_depend>auto_rally_platform_gazebo</run_depend>
 
   <export>
     <metapackage/>
