@@ -5,7 +5,6 @@ catkin_package()
 
 install(PROGRAMS
   nodes/autoRally_controller.py
-  nodes/joystickAckermann.py
   nodes/wheelSpeedsGazebo.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 

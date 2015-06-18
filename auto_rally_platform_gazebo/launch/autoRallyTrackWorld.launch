@@ -42,16 +42,4 @@
               -x 0 -y 0 -z 0.0762
               -R 0 -P 0 -Y 0"/>
 
-  <!-- Load the jumps. -->
-  <node name="spawn_jump1" pkg="gazebo_ros" type="spawn_model"
-        args="-file $(find ackermann_vehicle_description)/urdf/jump22deg.urdf -urdf -model jump22deg
-              -gazebo_namespace /$(arg namespace)/gazebo
-              -x 1 -y 7.5 -z 0
-              -R 0 -P 0 -Y -3.1415"/>
-  <node name="spawn_jump2" pkg="gazebo_ros" type="spawn_model"
-        args="-file $(find ackermann_vehicle_description)/urdf/jump30deg.urdf -urdf -model jump30deg
-              -gazebo_namespace /$(arg namespace)/gazebo
-              -x -1 -y -7.5 -z 0
-              -R 0 -P 0 -Y 0"/>
-
 </launch>
